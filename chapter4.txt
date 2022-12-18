@@ -1,0 +1,42 @@
+- userEvent
+    - testing-library 에서 이벤트를 발생시켜주는 module
+    - fireEvent 보다 자주쓰임
+        - 저 정교하고 현실적이기 때문.
+        - fireEvent 는 DOM event 만 발생시킴
+        - userEvent 는 전체적인 interaction 을 발생시키는데 비해,
+    -npm list @testing-library/user-event 입력후 버젼 확인
+        - 버젼인 최신 버젼이 아니면 최신 버젼 설치
+        - npm i @testing-library/user-event@^14(버젼 번호)
+    - userEvent 
+        - setup() 매서드
+        - user-event의 instance를 설정 (configure) 해주는 메서드
+        - 생성된 instance는 하나의 input device state 만을 공유함
+        ex)
+            import userEvent from '@testing-library/user-event'
+            const user = userEvent.setup()
+            await user.keyboard('[ShiftLeft>]') 
+            // Press Shift (without releasing it)
+            await user.click(element)
+        - userEvent 의 method 는 promise 를 반환함
+            - 즉 await 를 사용해야함.
+
+- screeb query methods:
+    - "command"[ALL]BY"QueryType"
+    - command : 
+        - get : expect element to be in DOM
+        - query : expect element not to be in DOM
+        - find : expect element to appear async
+    - [ALL] : 
+        - exclude : expect only one match
+        - include : expect more than one match
+    - Query Type:
+        - Role
+        - AltText
+        - Text 
+        - Form elements :
+            - Placeholder Text
+            - Label Text
+            - Display Value
+        
+
+    
