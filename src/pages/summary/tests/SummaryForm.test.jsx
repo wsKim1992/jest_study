@@ -49,3 +49,4 @@ test("popover responds to hover", async () => {
   await user.unhover(termsAndConditions);
   expect(popover).not.toBeInTheDocument();
 });
+

@@ -1,0 +1,51 @@
+Mock Service Worker Handler:
+    - ex)
+        import {rest} from 'msw'
+        export const handlers = [
+            rest.get("http://localhost:3030/scoops", (req, res, ctx) => {
+                return res(
+                ctx.json([
+                    { name: "Chocolate", imagePath: "/images/chocolate.png" },
+                    { name: "Vanilla", imagePath: "/images/vanilla.png" },
+                ])
+                );
+            }),
+        ];
+
+    - rest.get : HTTP method to mock : get, post ,etc 
+    - response resolver func : 
+        - req: request obj,
+        - res : response obj,
+        - ctx : utility to build response
+    
+    - 즉 "/scoops" 라는 요청을 처리해주는 요청처리 로직을 배열 형태로 반환
+
+    - 서버 setting 
+    - server.js 로 가서
+    - 위에 정의해 놓은 handlers 배열 import
+    - 그리고 server setting
+        - ex)
+            import { setupServer } from 'msw/node';
+            import { handlers } from './handlers';
+
+            // This configures a request mocking server with the given request handlers.
+            export const server = setupServer(...handlers);
+    - setupTest.js 파일로 가서 다음과 같이 설정
+        - ex)
+            import "@testing-library/jkest-dom";
+
+            // src/setupTests.js
+            import { server } from "./mocks/server.js";
+            // Establish API mocking before all tests.
+            beforeAll(() => server.listen());
+
+            // Reset any request handlers that we may add during the tests,
+            // so they don't affect other tests.
+            afterEach(() => server.resetHandlers());
+
+            // Clean up after the tests are finished.
+            afterAll(() => server.close());
+
+        - beforeAll(() => server.listen()) : testing 하는 모든 요청에
+                mock server 로 하여금 listening 상태로 설정
+        - afterEach(() => server.resetHandlers()); : testing 완료 후 server 를 reset 해줌
